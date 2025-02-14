@@ -1,0 +1,9 @@
+customer Data:
+seif_magdii_saber
+egypt_elmenofeya_elbagour
+18
++201091334384
+male
+5000
+##################################################
+
