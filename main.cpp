@@ -1,4 +1,4 @@
-#include "pharmcy.h"
+#include "include/pharmcy.h"
 #include <cctype>
 #include <fstream>
 #include <iostream>
@@ -6,13 +6,18 @@
 #include <string>
 #include <vector>
 using namespace std;
-string getPasswordowner() {
+
+const string DATA_DIR = "data/";
+
+string getPasswordowner()
+{
     string password;
     cout << "Enter your password: ";
     cin >> password;
     return password;
 }
-bool passwordChecker(string filename) {
+bool passwordChecker(string filename)
+{
     bool passwordCorrect = false;
     int attempts = 3;
     employee Employee;
@@ -28,59 +33,61 @@ bool passwordChecker(string filename) {
     cout << "Enter the  number of username :" << endl;
     cin >> usint;
     UserName = UserName0 + "_" + UserName1 + "_" + usint;
-    bool result = Employee.Searchtt(filename, UserName, 6);
-    if (result) {
-        while (attempts > 0) {
+    bool result = Employee.Searchtt(DATA_DIR + filename, UserName, 6);
+    if (result)
+    {
+        while (attempts > 0)
+        {
             cout << "Enter your password:" << endl;
             cin >> password;
             string correctPass = Employee.result.followingLines.at(6);
-            if (password.length() == 0) {
+            if (password.length() == 0)
+            {
                 cout << "Password cannot be empty. " << endl;
             }
-            else if (password.length() != 6) {
+            else if (password.length() != 6)
+            {
                 cout << "Password must be 6 characters. " << endl;
             }
 
-            if (correctPass == password) {
+            if (correctPass == password)
+            {
                 cout << "Password correct. Welcome!" << endl;
                 passwordCorrect = true;
                 return true;
             }
-            else {
+            else
+            {
                 cout << "Incorrect password. Please try again." << endl;
                 attempts--;
             }
         }
-        if (attempts == 0) {
-            cout << "You have exceeded the maximum number of attempts. Exiting..."
-                << endl;
-            return false;
-        }
-
     }
-
-    else {
-        cout << "error no name found in the file !" << endl;
-        return false;
-    }
+    return false;
 }
-vector<string> readFile(const string& filename) {
+vector<string> readFile(const string &filename)
+{
     vector<string> lines;
-    ifstream file(filename);
-    if (file.is_open()) {
+    ifstream file(DATA_DIR + filename);
+    if (file.is_open())
+    {
         string line;
-        while (getline(file, line)) {
+        while (getline(file, line))
+        {
             lines.push_back(line);
         }
         file.close();
     }
-    else {
+    else
+    {
         cout << "Unable to open file: " << filename << endl;
     }
     return lines;
 }
-void cashierMenu() {
-    while (true) {
+void cashierMenu()
+{
+    while (true)
+    {
         cout << "\n===== cashier inventory menu =====" << endl;
         cout << "1. add product to transaction cart" << endl;
         cout << "2. display products in inventory" << endl;
@@ -102,21 +109,25 @@ void cashierMenu() {
         vector<int> totalV;
 
         cout << "enter your choice: ";
-        while (!(cin >> choice)) {
+        while (!(cin >> choice))
+        {
             cout << "Invalid input. Please enter an integer: ";
             cin.clear(); // Clear error flags
             cin.ignore(numeric_limits<streamsize>::max(),
-                '\n'); // Discard invalid input
+                       '\n'); // Discard invalid input
         }
         cout << endl;
 
-        if (choice == 1) {
+        if (choice == 1)
+        {
         }
-        else if (choice > 1) {
+        else if (choice > 1)
+        {
             choice++;
         }
 
-        switch (choice) {
+        switch (choice)
+        {
         case 1:
             cout << "\nSelect a medicine by entering its number:\n";
             cout << "1. Paracetamol\n";
@@ -130,14 +141,16 @@ void cashierMenu() {
             cout << "9. Lactulose\n";
             cout << "10. Bisacodyl\n";
             cout << "Enter your choice (1-10) : ";
-            while (!(cin >> choice)) {
+            while (!(cin >> choice))
+            {
                 cout << "Invalid input. Please enter an integer: ";
                 cin.clear(); // Clear error flags
                 cin.ignore(numeric_limits<streamsize>::max(),
-                    '\n'); // Discard invalid input
+                           '\n'); // Discard invalid input
             }
 
-            switch (choice) {
+            switch (choice)
+            {
             case 1:
                 cout << "You selected Paracetamol.\n";
                 totalV.push_back(p1.addCart("paracetamol"));
@@ -200,7 +213,8 @@ void cashierMenu() {
             break;
         case 3:
             dt = readFile("medicines.txt");
-            for (const string& line : dt) {
+            for (const string &line : dt)
+            {
                 cout << line << endl;
             }
             break;
@@ -222,7 +236,8 @@ void cashierMenu() {
             cin >> name8;
             cin >> name9;
             name10 = name7 + "_" + name8 + "_" + name9;
-            for (char c : name10) {
+            for (char c : name10)
+            {
                 cname += tolower(c);
             }
 
@@ -235,8 +250,10 @@ void cashierMenu() {
         }
     }
 }
-void ownerMenu() {
-    while (true) {
+void ownerMenu()
+{
+    while (true)
+    {
         cout << "\n===== Owner Inventory Menu =====" << endl;
         cout << "1. Add Employee" << endl;
         cout << "2. Search Employee" << endl;
@@ -249,13 +266,15 @@ void ownerMenu() {
         string name, name0, name1, name2, name3;
         string fileName;
         cout << "Enter your choice: ";
-        while (!(cin >> choice)) {
+        while (!(cin >> choice))
+        {
             cout << "Invalid input. Please enter an integer: ";
             cin.clear(); // Clear error flags
             cin.ignore(numeric_limits<streamsize>::max(),
-                '\n'); // Discard invalid input
+                       '\n'); // Discard invalid input
         }
-        switch (choice) {
+        switch (choice)
+        {
         case 1:
             fileName = e1.employeetype();
             e1.SetName();
@@ -269,12 +288,14 @@ void ownerMenu() {
             break;
         case 2:
             fileName = e1.employeetype();
-            cout << "enter the name of the employee:\n" << endl;
+            cout << "enter the name of the employee:\n"
+                 << endl;
             cin >> name1;
             cin >> name2;
             cin >> name3;
             name0 = name1 + "_" + name2 + "_" + name3;
-            for (char c : name0) {
+            for (char c : name0)
+            {
                 name += tolower(c);
             }
             e1.bestSearch(fileName, name, 6);
@@ -287,7 +308,8 @@ void ownerMenu() {
         case 4:
             fileName = e1.employeetype();
             data = readFile(fileName);
-            for (const string& line : data) {
+            for (const string &line : data)
+            {
                 cout << line << endl;
             }
             break;
@@ -298,8 +320,10 @@ void ownerMenu() {
         }
     }
 }
-void pharmacistMenu() {
-    while (true) {
+void pharmacistMenu()
+{
+    while (true)
+    {
         cout << "\n===== Pharmacist Inventory Menu =====" << endl;
         cout << "1. Add Product to Inventory" << endl;
         cout << "2. Search Product in Inventory" << endl;
@@ -313,13 +337,15 @@ void pharmacistMenu() {
         vector<string> dta;
 
         cout << "Enter your choice: ";
-        while (!(cin >> choice)) {
+        while (!(cin >> choice))
+        {
             cout << "Invalid input. Please enter an integer: ";
             cin.clear(); // Clear error flags
             cin.ignore(numeric_limits<streamsize>::max(),
-                '\n'); // Discard invalid input
+                       '\n'); // Discard invalid input
         }
-        switch (choice) {
+        switch (choice)
+        {
         case 1:
             ob5.setName();
             ob5.setPrice();
@@ -339,7 +365,8 @@ void pharmacistMenu() {
             break;
         case 3:
             dta = readFile("medicines.txt");
-            for (const string& line : dta) {
+            for (const string &line : dta)
+            {
                 cout << line << endl;
             }
             break;
@@ -354,13 +381,15 @@ void pharmacistMenu() {
     }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-int main(void) {
+int main(void)
+{
     int choice = 0;
     string userName;
     const string mainPassword = "d1234";
     string password;
     int attempts = 3;
-    while (true) {
+    while (true)
+    {
         cout << "\n###### Pharmacy Management System ######" << endl;
         cout << "Job Roles:" << endl;
         cout << "1. Owner" << endl;
@@ -368,46 +397,56 @@ int main(void) {
         cout << "3. Pharmacist" << endl;
         cout << "4. Exit" << endl;
         cout << "Enter your job role: ";
-        while (!(cin >> choice)) {
+        while (!(cin >> choice))
+        {
             cout << "Invalid input. Please enter an integer: ";
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
-        switch (choice) {
+        switch (choice)
+        {
         case 1:
-            while (attempts > 0) {
+            while (attempts > 0)
+            {
                 password = getPasswordowner();
-                if (password == mainPassword) {
+                if (password == mainPassword)
+                {
                     cout << "Welcome to the Dealers System\n";
                     ownerMenu();
                     break;
                 }
-                else {
+                else
+                {
                     cout << "Password is wrong. Please try again.\n";
                     attempts--;
                 }
             }
 
-            if (attempts == 0) {
+            if (attempts == 0)
+            {
                 cout << "You have exceeded the maximum number of attempts.\n "
-                    "Exiting.............\n";
+                        "Exiting.............\n";
                 return 0;
             }
             break;
         case 2:
-            if (passwordChecker("Cashier.txt")) {
+            if (passwordChecker("Cashier.txt"))
+            {
                 cashierMenu();
             }
-            else {
+            else
+            {
                 cout << "error Error: Unable to open account! \n";
             }
 
             break;
         case 3:
-            if (passwordChecker("Pharmacist.txt")) {
+            if (passwordChecker("Pharmacist.txt"))
+            {
                 pharmacistMenu();
             }
-            else {
+            else
+            {
                 cout << "error Error: Unable to open account! \n";
             }
 
@@ -419,5 +458,3 @@ int main(void) {
         }
     }
 }
-
-+
